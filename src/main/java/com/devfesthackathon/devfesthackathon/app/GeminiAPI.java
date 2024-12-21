@@ -8,100 +8,138 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+/**
+ * A class that provides methods to interact with Google's Generative Language API (GEMINI).
+ */
 public class GeminiAPI {
+    private static final Logger logger = Logger.getLogger(GeminiAPI.class.getName());
 
-    private static final String API_KEY = "AIzaSyChQlLOjm8YKdbWQ6cv4sKcWLajxKqhK6s"; // Replace with your actual API key!
-    private static final String TEXT_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent";
-    private static final String VISION_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-vision:generateContent";
-    private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-    private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private static final String API_KEY = "AIzaSyChQlLOjm8YKdbWQ6cv4sKcWLajxKqhK6s";
+    private static final String BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
 
-    public static String generateTextContent(String prompt) {
-        try {
-            Map<String, Object> requestBody = new HashMap<>();
-            Map<String, Object> contents = new HashMap<>();
-            Map<String, String> parts = new HashMap<>();
+    private static final class Models {
+        static final String TEXT = "gemini-1.0-pro";
+        static final String VISION = "gemini-1.5-flash";
+    }
 
-            parts.put("text", prompt);
-            contents.put("parts", new Object[]{parts});
-            requestBody.put("contents", contents);
-            String jsonResponse = executeRequest(TEXT_ENDPOINT, requestBody);
-
-            JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
-
-            if (response.has("candidates") && !response.getAsJsonArray("candidates").isEmpty()) {
-                JsonObject candidate = response.getAsJsonArray("candidates").get(0).getAsJsonObject();
-                if (candidate.has("content")) {
-                    JsonObject content = candidate.getAsJsonObject("content");
-                    if (content.has("parts") && !content.getAsJsonArray("parts").isEmpty()) {
-                        JsonObject part = content.getAsJsonArray("parts").get(0).getAsJsonObject();
-                        if (part.has("text")) {
-                            return part.get("text").getAsString();
-                        }
-                    }
-                }
-            }
-            return "No text response found.";
-        } catch (Exception e) {
-            System.err.println("Error generating text: " + e.getMessage());
-            return "Error generating text: " + e.getMessage();
+    private static final class Config {
+        static Map<String, Object> getDefaultGenerationConfig() {
+            return Map.of(
+                    "temperature", 0.9,
+                    "topK", 1,
+                    "topP", 1,
+                    "maxOutputTokens", 2048,
+                    "stopSequences", List.of()
+            );
         }
     }
 
-    public static String generateImageContent(String prompt, String imagePath) {
+    public static String generateText(String prompt) {
         try {
-            File imageFile = new File(imagePath);
-            if (!imageFile.exists()) {
-                throw new Exception("Image file not found: " + imagePath);
-            }
-
-            byte[] imageBytes = Files.readAllBytes(Path.of(imagePath));
-            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-            Map<String, Object> requestBody = new HashMap<>();
-            Map<String, Object> contents = new HashMap<>();
-            Map<String, Object> textPart = new HashMap<>();
-            Map<String, Object> imagePart = new HashMap<>();
-            Map<String, String> imageData = new HashMap<>();
-
-            textPart.put("text", prompt);
-
-            String mimeType = getMimeType(imagePath);
-            System.out.println(mimeType);
-            imageData.put("mime_type", mimeType);
-            imageData.put("data", base64Image);
-            imagePart.put("inline_data", imageData);
-
-            contents.put("parts", new Object[]{textPart, imagePart});
-            requestBody.put("contents", contents);
-
-            String jsonResponse = executeRequest(VISION_ENDPOINT, requestBody);
-
-            JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
-            if (response.has("candidates") && !response.getAsJsonArray("candidates").isEmpty()) {
-                JsonObject candidate = response.getAsJsonArray("candidates").get(0).getAsJsonObject();
-                if (candidate.has("content")) {
-                    JsonObject content = candidate.getAsJsonObject("content");
-                    if (content.has("parts") && !content.getAsJsonArray("parts").isEmpty()) {
-                        JsonObject part = content.getAsJsonArray("parts").get(0).getAsJsonObject();
-                        if (part.has("text")) {
-                            return part.get("text").getAsString();
-                        }
-                    }
-                }
-            }
-            return "No image analysis response found."; // More specific message
+            Map<String, Object> requestBody = createRequestBody(prompt);
+            String endpoint = getEndpoint(Models.TEXT);
+            return executeRequestAndExtractText(endpoint, requestBody);
         } catch (Exception e) {
-            System.err.println("Error analyzing image: " + e.getMessage());
-            return "Error analyzing image: " + e.getMessage();
+            return handleError(e);
         }
+    }
+
+    public static String generateImageResponse(String prompt, String imagePath) {
+        try {
+            Map<String, Object> requestBody = createImageRequestBody(prompt, imagePath);
+            String endpoint = getEndpoint(Models.VISION);
+            return executeRequestAndExtractText(endpoint, requestBody);
+        } catch (Exception e) {
+            return handleError(e);
+        }
+    }
+
+    private static Map<String, Object> createRequestBody(String prompt) {
+        Map<String, Object> content = new HashMap<>();
+        content.put("role", "user");
+        content.put("parts", List.of(Map.of("text", prompt)));
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("contents", List.of(content));
+        requestBody.put("generationConfig", Config.getDefaultGenerationConfig());
+
+        return requestBody;
+    }
+
+    private static Map<String, Object> createImageRequestBody(String prompt, String imagePath) throws Exception {
+        String base64Image = encodeImage(imagePath);
+
+        Map<String, Object> content = new HashMap<>();
+        content.put("role", "user");
+        content.put("parts", List.of(
+                Map.of("text", prompt),
+                Map.of("inline_data", Map.of(
+                        "mime_type", getMimeType(imagePath),
+                        "data", base64Image
+                ))
+        ));
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("contents", List.of(content));
+        requestBody.put("generationConfig", Config.getDefaultGenerationConfig());
+
+        return requestBody;
+    }
+
+    private static String encodeImage(String imagePath) throws Exception {
+        byte[] imageBytes = Files.readAllBytes(Path.of(imagePath));
+        return Base64.getEncoder().encodeToString(imageBytes);
+    }
+
+    private static String getEndpoint(String model) {
+        return BASE_URL + model + ":generateContent?key=" + API_KEY;
+    }
+
+    private static String executeRequestAndExtractText(String endpoint, Map<String, Object> requestBody) throws Exception {
+        String response = executeRequest(endpoint, requestBody);
+        return extractTextFromResponse(response);
+    }
+
+    private static String executeRequest(String endpoint, Map<String, Object> requestBody) throws Exception {
+        HttpRequestFactory requestFactory = new NetHttpTransport()
+                .createRequestFactory(request ->
+                        request.setParser(new JsonObjectParser(GsonFactory.getDefaultInstance())));
+
+        HttpRequest request = requestFactory.buildPostRequest(
+                new GenericUrl(endpoint),
+                new JsonHttpContent(GsonFactory.getDefaultInstance(), requestBody)
+        );
+
+        return request.execute().parseAsString();
+    }
+
+    private static String extractTextFromResponse(String jsonResponse) {
+        JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        if (!response.has("candidates") || response.getAsJsonArray("candidates").isEmpty()) {
+            return "No response found";
+        }
+
+        JsonObject candidate = response.getAsJsonArray("candidates").get(0).getAsJsonObject();
+        if (!candidate.has("content")) {
+            return "No content found";
+        }
+
+        JsonObject content = candidate.getAsJsonObject("content");
+        if (!content.has("parts") || content.getAsJsonArray("parts").isEmpty()) {
+            return "No parts found";
+        }
+
+        return content.getAsJsonArray("parts")
+                .get(0).getAsJsonObject()
+                .get("text").getAsString();
     }
 
     private static String getMimeType(String filePath) {
@@ -111,34 +149,26 @@ public class GeminiAPI {
             case "png" -> "image/png";
             case "gif" -> "image/gif";
             case "webp" -> "image/webp";
-            default -> "image/jpeg"; // Default to JPEG if unknown
+            default -> "image/jpeg";
         };
     }
 
-    private static String executeRequest(String endpoint, Map<String, Object> requestBody) throws Exception {
-        HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(
-                request -> request.setParser(new JsonObjectParser(JSON_FACTORY)));
-
-        HttpRequest request = requestFactory.buildPostRequest(
-                new GenericUrl(endpoint + "?key=" + API_KEY),
-                new JsonHttpContent(JSON_FACTORY, requestBody));
-
-        return request.execute().parseAsString();
+    private static String handleError(Exception e) {
+        logger.severe(e.getMessage());
+        return "Error: " + e.getMessage();
     }
 
     public static void main(String[] args) {
-//        System.out.println("Generating text response...");
-//        String textResponse = generateTextContent("What is your version?");
-//
-//        System.out.println("Text Response:\n" + textResponse);
+        // Test of text generation
+        String textResponse = generateText("What is a healthy crop?");
+        System.out.println("Text Response: " + textResponse);
 
-        System.out.println("\nAnalyzing image...");
-        String imagePath = "D:\\DevFEst\\cum\\src\\main\\resources\\images\\test_image.jpg"; // Use a more robust way to get the path
-        String imageResponse = generateImageContent(
-                "What's in this image?",
+        // Test of image analysis
+        String imagePath = "src/main/resources/images/test_image.jpg";
+        String imageResponse = generateImageResponse(
+                "Do you see healthy or unhealthy crops and why?",
                 imagePath
         );
-
-        System.out.println("Image Analysis:\n" + imageResponse);
+        System.out.println("Image Analysis: " + imageResponse);
     }
 }
