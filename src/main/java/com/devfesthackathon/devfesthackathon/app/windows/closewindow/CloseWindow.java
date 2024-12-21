@@ -1,7 +1,7 @@
 package com.devfesthackathon.devfesthackathon.app.windows.closewindow;
 
 import com.devfesthackathon.devfesthackathon.app.Window;
-import com.devfesthackathon.devfesthackathon.app.windows.mainwindow.MainWindow;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
