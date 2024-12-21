@@ -1,0 +1,670 @@
+/**
+ * styles-dark.css
+ *
+ * This stylesheet defines the visual appearance and layout of various UI components
+ * in the application. It includes styles for panes, labels, buttons, text areas,
+ * menus, and other UI elements to ensure a consistent look and feel across different
+ * windows and dialogues.
+ *
+ * Key Styles:
+ * - Pane Styles: Styling for anchor panes and split panes.
+ * - Label Styles: Font and color settings for headers, text, labels, and hyperlinks.
+ * - Button Styles: Appearance settings for different types of buttons, including hover
+ *   and pressed states.
+ * - Text Area Styles: Formatting for text areas, code areas, and text flow elements.
+ * - Menu Styles: Styling for the application's menu bar and menu items.
+ * - Background Styles: General background color settings for the application.
+ *
+ * This file ensures that the UI components adhere to the application's design guidelines,
+ * providing a clean, modern, and user-friendly interface.
+ */
+
+.root {
+    -fx-base: #2c2c2c;
+    -fx-background: #2c2c2c;
+    -fx-control-inner-background: #2c2c2c;
+}
+
+* {
+    -fx-text-fill: #e0e0e0;
+}
+
+@font-face {
+    -fx-font-family: Calibri;
+    src: url('../fonts/calibri-regular.ttf');
+}
+
+@font-face {
+    -fx-font-family: Calibri;
+    -fx-font-weight: bold;
+    src: url('../fonts/calibri-bold.ttf');
+}
+
+/* Pane Styles */
+.anchor-pane {
+    -fx-background-color: #2c2c2c;
+    -fx-padding: 20px;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 1px;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 1px;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+
+.welcome-pane {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+/* Label and Text Styles */
+.header-label {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding-bottom: 10px;
+}
+
+.text {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 15px;
+    -fx-text-fill: #e0e0e0;
+    -fx-wrap-text: true;
+    -fx-padding-bottom: 10px;
+}
+
+TextFlow Text {
+    -fx-fill: #e0e0e0;
+}
+
+.label, .value, .hyperlink {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 15px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.value {
+    -fx-text-fill: #b0b0b0;
+}
+
+.hyperlink {
+    -fx-text-fill: #6db5ff;
+    -fx-underline: true;
+    -fx-alignment: center;
+    -fx-padding: 0 2px;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #4da6ff;
+}
+
+.hyperlink:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #4da6ff;
+}
+
+.welcome-label .text {
+    -fx-text-fill: #e0e0e0 !important;
+    -fx-font-weight: bold !important;
+    -fx-font-family: 'Calibri' !important;
+    -fx-font-size: 24px !important; /* Adjusted to match FXML */
+}
+
+.welcome-sub-label .text {
+    -fx-text-fill: #b0b0b0 !important;
+    -fx-font-family: 'Calibri' !important;
+    -fx-font-size: 18px !important; /* Adjusted to match FXML */
+}
+
+.welcome-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.welcome-sub-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #b0b0b0;
+}
+
+.status-message {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Calibri';
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.project-info {
+    -fx-font-size: 11px;
+    -fx-text-fill: #b0b0b0;
+}
+
+.dialog-header-text {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 20px !important;
+    -fx-font-weight: bold;
+}
+
+.dialog-subtext {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 16px !important;
+}
+
+.tooltip {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 2);
+}
+
+/* Box Styles */
+.info-box, .links-box {
+    -fx-spacing: 10px;
+}
+
+.links-box {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 1px;
+}
+
+.button:hover {
+    -fx-background-color: #4c4c4c;
+}
+
+.button:pressed {
+    -fx-background-color: #5c5c5c;
+    -fx-border-color: #6c6c6c;
+    -fx-border-width: 1px;
+}
+
+.button-blue {
+    -fx-background-color: #2E86C1;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #2874A6;
+    -fx-border-width: 1px;
+}
+
+.button-blue:hover {
+    -fx-background-color: #2874A6;
+}
+
+.button-blue:pressed {
+    -fx-background-color: #1F618D;
+    -fx-border-color: #1A5276;
+    -fx-border-width: 1px;
+}
+
+.run-button {
+    -fx-background-color: #28a745 !important;
+    -fx-text-fill: white !important;
+    -fx-font-size: 14px !important;
+    -fx-padding: 10px 20px !important;
+    -fx-background-radius: 5px !important;
+    -fx-border-radius: 5px !important;
+    -fx-border-color: #28a745 !important;
+}
+
+.run-button:hover {
+    -fx-background-color: #218838 !important;
+}
+
+/* Combo Box Styles */
+.combo-box {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-pref-height: 30px;
+    -fx-min-width: 120px;
+}
+
+.combo-box:hover {
+    -fx-background-color: #4c4c4c;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 4 0 4 7;
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e0e0;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
+}
+
+.combo-box-popup .list-cell {
+    -fx-padding: 4 0 4 7;
+    -fx-background-color: #3c3c3c;
+}
+
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: #4c4c4c;
+    -fx-text-fill: white;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8 0 0;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #b0b0b0;
+    -fx-background-insets: 0;
+    -fx-padding: 3 5 3 5;
+    -fx-shape: "M0,0 L6,5 L12,0 Z";
+}
+
+.combo-box:hover .arrow-button .arrow {
+    -fx-background-color: #e0e0e0;
+}
+
+/* Styles for other options (keeping hover effect) */
+.appearance-settings-HBox, .font-settings-HBox, .font-option-HBox {
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-color: transparent;
+}
+
+.appearance-settings-HBox:hover, .font-settings-HBox:hover, .font-option-HBox:hover,
+.appearance-settings-HBox:selected, .font-settings-HBox:selected, .font-option-HBox:selected {
+    -fx-font-weight: bold;
+    -fx-border-color: #4c4c4c;
+    -fx-background-color: #4c4c4c;
+}
+
+.selected {
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-color: #4c4c4c;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Text Area and Text Flow Styles */
+.text-area {
+    -fx-text-fill: #e0e0e0;
+    -fx-background-color: #2c2c2c;
+    -fx-padding: 10px;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.left-pane {
+    -fx-background-color: #383838;
+    -fx-padding: 10px;
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.result-text-flow {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.result-text-flow .text {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.result-text-flow .content {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Table View Styles */
+.table-view {
+    -fx-background-color: #2c2c2c;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-border-color: #3c3c3c;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #3c3c3c;
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-padding: 5px 0 5px 0;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #4c4c4c;
+}
+
+.table-view .column-header .label {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+    -fx-alignment: center-left;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #2c2c2c;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #333333;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #4c4c4c;
+}
+
+.table-view .table-cell {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+    -fx-alignment: center-left;
+    -fx-padding: 5px 8px 5px 8px;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar:vertical .thumb,
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #4c4c4c;
+    -fx-background-radius: 5em;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover,
+.table-view .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #5c5c5c;
+}
+
+/* Last row rounded corners at the bottom */
+.table-row-cell:filled:selected .table-cell {
+    -fx-background-color: #4c4c4c;
+}
+
+.table-row-cell:filled:selected:odd .table-cell {
+    -fx-background-color: #4c4c4c;
+}
+
+.table-row-cell:filled:selected:focused .table-cell {
+    -fx-background-color: #4c4c4c;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:vertical .track,
+.table-view .virtual-flow .scroll-bar:vertical .track-background,
+.table-view .virtual-flow .scroll-bar:horizontal,
+.table-view .virtual-flow .scroll-bar:horizontal .track,
+.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+}
+
+/* ListView Table Styles */
+.list-view-table {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 0;
+}
+
+.list-view-table:focused {
+    -fx-background-insets: 0;
+}
+
+.list-view-table .list-cell {
+    -fx-background-color: #2c2c2c;
+    -fx-padding: 8px 0 8px 8px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.list-view-table .list-cell:selected {
+    -fx-background-color: #4c4c4c;
+    -fx-background-insets: 0;
+    -fx-text-fill: #e0e0e0;
+}
+
+.list-view-table .list-cell:focused {
+    -fx-background-insets: 0;
+}
+
+.list-view-table .list-cell .text {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 16px;
+    -fx-fill: #e0e0e0;
+}
+
+.list-view-table .list-cell:selected .text {
+    -fx-fill: #ffffff;
+}
+
+.list-view-table .scroll-bar:vertical,
+.list-view-table .scroll-bar:horizontal {
+    -fx-background-color: #2c2c2c;
+}
+
+.list-view-table .scroll-bar:vertical .thumb,
+.list-view-table .scroll-bar:horizontal .thumb {
+    -fx-background-color: #4c4c4c;
+    -fx-background-radius: 3em;
+}
+
+.list-view-table .scroll-bar:vertical .thumb:hover,
+.list-view-table .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #5c5c5c;
+}
+
+/* Remove focus border */
+.list-view-table:focused {
+    -fx-background-color: #2c2c2c;
+    -fx-background-insets: 0;
+}
+
+/* Ensure the selection goes to the edges */
+.list-view-table .virtual-flow .clipped-container .sheet .list-cell:filled:selected {
+    -fx-background-insets: 0;
+}
+
+/* Additional rule to ensure text color remains white when selected */
+.list-view-table .list-cell:filled:selected,
+.list-view-table .list-cell:filled:selected:focused {
+    -fx-text-fill: #ffffff;
+}
+
+/* Menu Styles */
+.menu-bar {
+    -fx-background-color: #2c2c2c;
+    -fx-padding: 5px;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.menu, .menu-item, .left-pane-label {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 5px 10px;
+}
+
+.menu-item:hover, .menu-item:focused {
+    -fx-background-color: #4c4c4c;
+}
+
+/* Background Styles */
+.background-color {
+    -fx-background-color: #2c2c2c;
+}
+
+/* Options Styles for Settings window */
+.appearance-settings-HBox, .font-settings-HBox, .font-option-HBox {
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-color: transparent;
+}
+
+.appearance-settings-HBox:hover, .font-settings-HBox:hover, .font-option-HBox:hover,
+.appearance-settings-HBox:selected, .font-settings-HBox:selected, .font-option-HBox:selected {
+    -fx-font-weight: bold;
+    -fx-border-color: #4c4c4c;
+    -fx-background-color: #4c4c4c;
+}
+
+.appearance-settings-HBox Label, .font-settings-HBox Label {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+}
+
+.font-option-HBox Label {
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 15px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.selected {
+    -fx-border-color: #4c4c4c;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-color: #4c4c4c;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* First column of the table */
+.first-column {
+    -fx-padding: 0 0 0 10px;
+}
+
+/* Font classes */
+.bold-font {
+    -fx-font-weight: bold;
+}
+
+.calibri-font {
+    -fx-font-family: "Calibri";
+}
+
+#calibri, #calibri .text {
+    -fx-font-family: 'Calibri';
+}
+
+.font10, .font10 .text {
+    -fx-font-size: 10px;
+}
+.font12, .font12 .text {
+    -fx-font-size: 12px;
+}
+.font14, .font14 .text {
+    -fx-font-size: 14px;
+}
+.font16, .font16 .text {
+    -fx-font-size: 16px;
+}
+.font18, .font18 .text {
+    -fx-font-size: 18px;
+}
+.font20, .font20 .text {
+    -fx-font-size: 20px;
+}
+.font22, .font22 .text {
+    -fx-font-size: 22px;
+}
+.font24, .font24 .text {
+    -fx-font-size: 24px;
+}
+.font26, .font26 .text {
+    -fx-font-size: 26px;
+}
+.font28, .font28 .text {
+    -fx-font-size: 28px;
+}
+.font30, .font30 .text {
+    -fx-font-size: 30px;
+}
+.font32, .font32 .text {
+    -fx-font-size: 32px;
+}
+.font34, .font34 .text {
+    -fx-font-size: 34px;
+}
+.font36, .font36 .text {
+    -fx-font-size: 36px;
+}
+.font38, .font38 .text {
+    -fx-font-size: 38px;
+}
+.font40, .font40 .text {
+    -fx-font-size: 40px;
+}
+.font42, .font42 .text {
+    -fx-font-size: 42px;
+}
