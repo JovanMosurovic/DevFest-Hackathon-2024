@@ -8,6 +8,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
@@ -17,8 +18,8 @@ import java.util.Map;
 public class GeminiAPI {
 
     private static final String API_KEY = "AIzaSyChQlLOjm8YKdbWQ6cv4sKcWLajxKqhK6s"; // Replace with your actual API key!
-    private static final String TEXT_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
-    private static final String VISION_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-vision:generateContent";
+    private static final String TEXT_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent";
+    private static final String VISION_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-vision:generateContent";
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
@@ -31,7 +32,6 @@ public class GeminiAPI {
             parts.put("text", prompt);
             contents.put("parts", new Object[]{parts});
             requestBody.put("contents", contents);
-
             String jsonResponse = executeRequest(TEXT_ENDPOINT, requestBody);
 
             JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
@@ -57,6 +57,11 @@ public class GeminiAPI {
 
     public static String generateImageContent(String prompt, String imagePath) {
         try {
+            File imageFile = new File(imagePath);
+            if (!imageFile.exists()) {
+                throw new Exception("Image file not found: " + imagePath);
+            }
+
             byte[] imageBytes = Files.readAllBytes(Path.of(imagePath));
             String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
@@ -69,6 +74,7 @@ public class GeminiAPI {
             textPart.put("text", prompt);
 
             String mimeType = getMimeType(imagePath);
+            System.out.println(mimeType);
             imageData.put("mime_type", mimeType);
             imageData.put("data", base64Image);
             imagePart.put("inline_data", imageData);
@@ -91,7 +97,7 @@ public class GeminiAPI {
                     }
                 }
             }
-            return "No text response found.";
+            return "No image analysis response found."; // More specific message
         } catch (Exception e) {
             System.err.println("Error analyzing image: " + e.getMessage());
             return "Error analyzing image: " + e.getMessage();
@@ -105,7 +111,7 @@ public class GeminiAPI {
             case "png" -> "image/png";
             case "gif" -> "image/gif";
             case "webp" -> "image/webp";
-            default -> "image/jpeg";
+            default -> "image/jpeg"; // Default to JPEG if unknown
         };
     }
 
@@ -114,22 +120,25 @@ public class GeminiAPI {
                 request -> request.setParser(new JsonObjectParser(JSON_FACTORY)));
 
         HttpRequest request = requestFactory.buildPostRequest(
-                new GenericUrl(endpoint + "?key=" + API_KEY), // Key is back in the URL
+                new GenericUrl(endpoint + "?key=" + API_KEY),
                 new JsonHttpContent(JSON_FACTORY, requestBody));
 
         return request.execute().parseAsString();
     }
 
     public static void main(String[] args) {
-        System.out.println("Generating text response...");
-        String textResponse = generateTextContent("Write a hello world program in Java");
-        System.out.println("Text Response:\n" + textResponse);
+//        System.out.println("Generating text response...");
+//        String textResponse = generateTextContent("What is your version?");
+//
+//        System.out.println("Text Response:\n" + textResponse);
 
         System.out.println("\nAnalyzing image...");
+        String imagePath = "D:\\DevFEst\\cum\\src\\main\\resources\\images\\test_image.jpg"; // Use a more robust way to get the path
         String imageResponse = generateImageContent(
                 "What's in this image?",
-                "D:\\DevFEst\\cum\\src\\main\\resources\\images\\test_image.jpg" // Replace with a valid path
+                imagePath
         );
+
         System.out.println("Image Analysis:\n" + imageResponse);
     }
 }

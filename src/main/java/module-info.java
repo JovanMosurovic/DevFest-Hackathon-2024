@@ -5,6 +5,7 @@ module com.devfesthackathon.devfesthackathon {
     requires com.google.api.client;
     requires com.google.api.client.json.gson;
     requires com.google.gson;
+    requires azure.cognitiveservices.computervision;
 
 
     opens com.devfesthackathon.devfesthackathon.app to javafx.fxml;

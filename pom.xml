@@ -15,6 +15,14 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <artifactId>libraries-bom</artifactId>
+            <groupId>com.google.cloud</groupId>
+            <scope>import</scope>
+            <type>pom</type>
+            <version>26.34.0</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -46,7 +54,20 @@
             <artifactId>google-api-client</artifactId>
             <version>2.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-storage</artifactId>
+            <version>2.44.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure.cognitiveservices</groupId>
+            <artifactId>azure-cognitiveservices-computervision</artifactId>
+            <version>1.0.9-beta</version>
+        </dependency>
     </dependencies>
+
+
+
 
     <build>
         <plugins>
