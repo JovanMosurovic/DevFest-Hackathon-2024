@@ -16,6 +16,7 @@ public abstract class Window {
      * The position of the main window in the application.
      */
     public static final int MAIN_WINDOW;
+    public static final int CLOSE_WINDOW;
 
     /**
      * The array of all windows in the application.
@@ -38,8 +39,9 @@ public abstract class Window {
     protected ControllerBase controller;
 
     static {
-        WINDOWS = 1;
+        WINDOWS = 2;
         MAIN_WINDOW = 0;
+        CLOSE_WINDOW = 1;
         isDarkTheme = false; // Default theme is light when the application starts
 
         windows = new Window[WINDOWS];
