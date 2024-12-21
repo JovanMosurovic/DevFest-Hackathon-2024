@@ -160,13 +160,13 @@ public class GeminiAPI {
 
     public static void main(String[] args) {
         // Test of text generation
-        String textResponse = generateText("What is a healthy crop?");
+        String textResponse = generateText("What is a healthy crop? Explain it in bullet points.");
         System.out.println("Text Response: " + textResponse);
 
         // Test of image analysis
         String imagePath = "src/main/resources/images/test_image.jpg";
         String imageResponse = generateImageResponse(
-                "Do you see healthy or unhealthy crops and why?",
+                "Do you see healthy or unhealthy crops on this image and why?",
                 imagePath
         );
         System.out.println("Image Analysis: " + imageResponse);
