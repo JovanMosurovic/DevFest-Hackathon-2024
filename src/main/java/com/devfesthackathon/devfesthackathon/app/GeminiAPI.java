@@ -36,11 +36,11 @@ public class GeminiAPI {
 
             JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
 
-            if (response.has("candidates") && response.getAsJsonArray("candidates").size() > 0) {
+            if (response.has("candidates") && !response.getAsJsonArray("candidates").isEmpty()) {
                 JsonObject candidate = response.getAsJsonArray("candidates").get(0).getAsJsonObject();
                 if (candidate.has("content")) {
                     JsonObject content = candidate.getAsJsonObject("content");
-                    if (content.has("parts") && content.getAsJsonArray("parts").size() > 0) {
+                    if (content.has("parts") && !content.getAsJsonArray("parts").isEmpty()) {
                         JsonObject part = content.getAsJsonArray("parts").get(0).getAsJsonObject();
                         if (part.has("text")) {
                             return part.get("text").getAsString();
@@ -79,11 +79,11 @@ public class GeminiAPI {
             String jsonResponse = executeRequest(VISION_ENDPOINT, requestBody);
 
             JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
-            if (response.has("candidates") && response.getAsJsonArray("candidates").size() > 0) {
+            if (response.has("candidates") && !response.getAsJsonArray("candidates").isEmpty()) {
                 JsonObject candidate = response.getAsJsonArray("candidates").get(0).getAsJsonObject();
                 if (candidate.has("content")) {
                     JsonObject content = candidate.getAsJsonObject("content");
-                    if (content.has("parts") && content.getAsJsonArray("parts").size() > 0) {
+                    if (content.has("parts") && !content.getAsJsonArray("parts").isEmpty()) {
                         JsonObject part = content.getAsJsonArray("parts").get(0).getAsJsonObject();
                         if (part.has("text")) {
                             return part.get("text").getAsString();
