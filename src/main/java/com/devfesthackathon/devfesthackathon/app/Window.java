@@ -17,6 +17,8 @@ public abstract class Window {
      */
     public static final int MAIN_WINDOW;
     public static final int CLOSE_WINDOW;
+    public static final int ABOUT_WINDOW;
+    public static final int FORCEQUIT_WINDOW;
 
     /**
      * The array of all windows in the application.
@@ -39,9 +41,11 @@ public abstract class Window {
     protected ControllerBase controller;
 
     static {
-        WINDOWS = 2;
+        WINDOWS = 4;
         MAIN_WINDOW = 0;
         CLOSE_WINDOW = 1;
+        ABOUT_WINDOW=2;
+        FORCEQUIT_WINDOW=3;
         isDarkTheme = false; // Default theme is light when the application starts
 
         windows = new Window[WINDOWS];
