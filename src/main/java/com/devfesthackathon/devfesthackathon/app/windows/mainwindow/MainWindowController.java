@@ -95,7 +95,7 @@ public class MainWindowController extends ControllerBase {
         attachButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.webp", "heic", "heif", "gif")
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.webp", "*.gif")
             );
             File selectedFile = fileChooser.showOpenDialog(null);
             if (selectedFile != null) {
