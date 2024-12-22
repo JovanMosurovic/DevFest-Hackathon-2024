@@ -29,6 +29,7 @@ public class MainWindow extends Window {
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
 
             this.stage = stage;
+            stage.setTitle("CropSense");
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/cropsense_icon.png"))));
             stage.setScene(scene);
             stage.setResizable(false);

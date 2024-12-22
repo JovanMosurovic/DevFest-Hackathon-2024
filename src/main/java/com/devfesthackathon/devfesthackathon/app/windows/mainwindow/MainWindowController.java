@@ -4,9 +4,6 @@ import com.devfesthackathon.devfesthackathon.app.ControllerBase;
 import com.devfesthackathon.devfesthackathon.app.GeminiAPI;
 import com.devfesthackathon.devfesthackathon.app.Window;
 import com.devfesthackathon.devfesthackathon.app.util.MarkdownParser;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -20,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
@@ -42,8 +38,6 @@ public class MainWindowController extends ControllerBase {
     private static final Logger logger = Logger.getLogger(MainWindowController.class.getName());
 
     @FXML
-    private ImageView avatarImage;
-    @FXML
     private Label welcomeLabel;
     @FXML
     private ScrollPane chatScrollPane;
@@ -56,8 +50,6 @@ public class MainWindowController extends ControllerBase {
     @FXML
     private Button sendButton;
 
-    private Timeline avatarAnimation;
-
     private File selectedImage = null;
 
     @Override
@@ -66,7 +58,6 @@ public class MainWindowController extends ControllerBase {
         chatScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         chatScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         generateWelcomeMessage();
-        setupAvatarAnimation();
         setupMessageHandling();
         setupAttachmentHandling();
     }
@@ -82,6 +73,8 @@ public class MainWindowController extends ControllerBase {
 
                 String generatedMessage = GeminiAPI.generateText(prompt);
 
+                Thread.sleep(5000);
+
                 Platform.runLater(() -> {
                     if (generatedMessage != null && !generatedMessage.isEmpty()) {
                         welcomeLabel.setText(generatedMessage);
@@ -91,23 +84,6 @@ public class MainWindowController extends ControllerBase {
                 logger.severe("Error occurred while generating welcome message: " + e.getMessage());
             }
         });
-    }
-
-    private void setupAvatarAnimation() {
-        avatarAnimation = new Timeline(
-                new KeyFrame(Duration.seconds(2),
-                        new KeyValue(avatarImage.rotateProperty(), 10),
-                        new KeyValue(avatarImage.scaleXProperty(), 1.1),
-                        new KeyValue(avatarImage.scaleYProperty(), 1.1)
-                ),
-                new KeyFrame(Duration.seconds(4),
-                        new KeyValue(avatarImage.rotateProperty(), -10),
-                        new KeyValue(avatarImage.scaleXProperty(), 1),
-                        new KeyValue(avatarImage.scaleYProperty(), 1)
-                )
-        );
-        avatarAnimation.setCycleCount(Timeline.INDEFINITE);
-        avatarAnimation.play();
     }
 
     private void setupMessageHandling() {

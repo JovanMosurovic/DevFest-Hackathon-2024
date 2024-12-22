@@ -75,7 +75,7 @@
 
 .text {
     -fx-font-family: 'Calibri';
-    -fx-font-size: 15px;
+    -fx-font-size: 16px;
     -fx-text-fill: #333333;
     -fx-wrap-text: true;
     -fx-padding-bottom: 10px;
@@ -122,8 +122,15 @@
 }
 
 .welcome-label {
-    -fx-font-size: 28px;
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
+    -fx-padding: 20px;
 }
 
 .welcome-sub-label {
@@ -249,6 +256,7 @@
     -fx-min-height: 40px;
     -fx-max-width: 40px;
     -fx-max-height: 40px;
+    -fx-border-color: #0470d7;
     -fx-padding: 8px;
     -fx-cursor: hand;
     -fx-transition: all 0.2s ease-in-out;
@@ -584,7 +592,27 @@
     -fx-padding: 0 0 0 10px;
 }
 
-/* Message styles */
+/* Message input field styles */
+.message-input-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 20;
+    -fx-border-width: 1px;
+    -fx-padding: 10 20;
+    -fx-prompt-text-fill: #999999;
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-pref-height: 20px;
+}
+
+.message-input-field:focused {
+    -fx-border-color: #0084ff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 132, 255, 0.3), 15, 0, 0, 0);
+}
+
+/*!* Message box styles *!*/
 .message-box {
     -fx-spacing: 10;
 }
@@ -597,21 +625,36 @@
     -fx-alignment: center-left;
 }
 
-.message-bubble {
-    -fx-wrap-text: true;
-    -fx-max-width: 300;
-    -fx-padding: 10;
-    -fx-background-radius: 15;
+/* Message bubble styles */
+ .message-bubble {
+    -fx-padding: 12 16;
+    -fx-background-radius: 20;
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 16px;
+    -fx-line-spacing: 5px;
 }
 
 .message-bubble-user {
     -fx-background-color: #0084ff;
     -fx-text-fill: white;
+    -fx-background-radius: 20 0 20 20;
 }
 
 .message-bubble-assistant {
-    -fx-background-color: #e4e6eb;
+    -fx-background-color: #f0f0f0;
     -fx-text-fill: #333333;
+    -fx-background-radius: 0 20 20 20;
+}
+
+/* Markdown container styles */
+.markdown-container {
+    -fx-max-width: 70%;
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 12 16;
+    -fx-background-radius: 20;
+    -fx-font-family: 'Calibri';
+    -fx-font-size: 16px;
+    -fx-line-spacing: 5px;
 }
 
 /* Markdown text styles */
@@ -630,7 +673,7 @@
     -fx-fill: #d63384;
 }
 
-/* Za kombinacije stilova */
+/* For style combination */
 .markdown-bold.markdown-italic {
     -fx-font-weight: bold;
     -fx-font-style: italic;
@@ -686,10 +729,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);
 }
 
-.loader-animation {
-    -fx-animation: loading 1.5s infinite;
-}
-
 @keyframes loading {
     0%, 100% {
         -fx-translate-y: 0;
@@ -698,5 +737,3 @@
         -fx-translate-y: 15px;
     }
 }
-
-

@@ -15,15 +15,15 @@
     <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <!-- Header with avatar -->
-        <HBox alignment="CENTER" style="-fx-background-color: #ffffff; -fx-padding: 10;">
-            <ImageView fx:id="avatarImage" fitHeight="80" fitWidth="80">
-                <Image url="@../../../../../../icons/warning_icon_64x64.png" />
+        <HBox alignment="CENTER" spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 20;">
+            <ImageView fitHeight="120" fitWidth="120" preserveRatio="true">
+                <Image url="@../../../../../../gifs/tractor.gif" />
             </ImageView>
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+            <Label fx:id="welcomeLabel" styleClass="welcome-label" />
         </HBox>
 
         <!-- Area for chat -->
-        <ScrollPane fx:id = "chatScrollPane" style="-fx-background: #ffffff; -fx-border-color: #e4e6eb;" VBox.vgrow="ALWAYS">
+        <ScrollPane fx:id="chatScrollPane" style="-fx-background: #ffffff; -fx-border-color: #e4e6eb;" VBox.vgrow="ALWAYS">
             <VBox fx:id="chatArea" prefHeight="625.0" prefWidth="1200.0" spacing="10" style="-fx-padding: 10;" />
         </ScrollPane>
 
@@ -31,18 +31,17 @@
         <HBox spacing="10" style="-fx-padding: 10;">
             <Button fx:id="attachButton" styleClass="attach-button">
                 <graphic>
-                    <ImageView styleClass="image-view" fitHeight="24" fitWidth="24">
+                    <ImageView fitHeight="24" fitWidth="24" styleClass="image-view">
                         <Image url="@../../../../../../icons/attach_icon.png" />
                     </ImageView>
                 </graphic>
             </Button>
 
-            <TextField fx:id="messageInput" promptText="Message CropSense"
-                       styleClass="message-input-field" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="messageInput" promptText="Message CropSense" styleClass="message-input-field" HBox.hgrow="ALWAYS" />
 
             <Button fx:id="sendButton" styleClass="send-button">
                 <graphic>
-                    <ImageView styleClass="image-view" fitHeight="24" fitWidth="24">
+                    <ImageView fitHeight="24" fitWidth="24" styleClass="image-view">
                         <Image url="@../../../../../../icons/send_icon.png" />
                     </ImageView>
                 </graphic>
