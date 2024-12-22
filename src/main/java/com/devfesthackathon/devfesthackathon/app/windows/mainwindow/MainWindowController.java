@@ -168,7 +168,9 @@ public class MainWindowController extends ControllerBase {
         try {
             String modifiedPrompt = finalMessage + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
                     "If the image is not related to agriculture, farming, crops, or plant care, " +
-                    "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
+                    "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions." +
+                    "Dont generate responses which contains markdown which is not bold, italic, code or citation.";
+
 
             String response = GeminiAPI.generateImageResponse(modifiedPrompt, tempImage.getAbsolutePath());
             addMessageToChat(response, false);
