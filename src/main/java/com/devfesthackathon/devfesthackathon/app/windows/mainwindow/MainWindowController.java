@@ -140,16 +140,18 @@ public class MainWindowController extends ControllerBase {
     }
 
     private void handleTextMessage(String message) {
-        addMessageToChat(message, true);
+        addMessageToChat(message, true, null);
         messageInput.clear();
 
         String modifiedPrompt = message + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
                 "If the question is not related to agriculture, farming, crops, or plant care, or it is just chatting, " +
                 "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
 
+        HBox loadingBox = createLoadingBox();
+        chatArea.getChildren().add(loadingBox);
         GeminiAPI.generateTextAsync(modifiedPrompt).thenAcceptAsync(response -> {
             if (response != null && !response.isEmpty()) {
-                Platform.runLater(() -> addMessageToChat(response, false));
+                Platform.runLater(() -> addMessageToChat(response, false, loadingBox));
             }
         });
     }
@@ -159,7 +161,7 @@ public class MainWindowController extends ControllerBase {
         String finalMessage = message.isEmpty() ? defaultPrompt : message;
 
         if(!message.isEmpty()) {
-            addMessageToChat(message, true);
+            addMessageToChat(message, true, null);
         }
 
         File tempImage = selectedImage;
@@ -173,7 +175,8 @@ public class MainWindowController extends ControllerBase {
 
 
             String response = GeminiAPI.generateImageResponse(modifiedPrompt, tempImage.getAbsolutePath());
-            addMessageToChat(response, false);
+            HBox loadingBox = createLoadingBox();
+            addMessageToChat(response, false, loadingBox);
         } catch (Exception e) {
             logger.severe("Error occurred while generating image response: " + e.getMessage());
         }
@@ -181,7 +184,34 @@ public class MainWindowController extends ControllerBase {
         selectedImage = null;
     }
 
-    private void addMessageToChat(String message, boolean isUser) {
+    private HBox createLoadingBox() {
+        HBox loadingBox = new HBox();
+        loadingBox.getStyleClass().add("message-box");
+        loadingBox.getStyleClass().add("message-box-assistant");
+
+        HBox loader = new HBox();
+        loader.getStyleClass().add("loader");
+        loader.setSpacing(5);
+
+        for (int i = 0; i < 3; i++) {
+            Circle circle = new Circle(3);
+            circle.getStyleClass().add("loader-circle");
+
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.6), circle);
+            transition.setByY(10);
+            transition.setCycleCount(TranslateTransition.INDEFINITE);
+            transition.setAutoReverse(true);
+            transition.setDelay(Duration.seconds(i * 0.2));
+            transition.play();
+
+            loader.getChildren().add(circle);
+        }
+
+        loadingBox.getChildren().add(loader);
+        return loadingBox;
+    }
+
+    private void addMessageToChat(String message, boolean isUser, HBox loadingBox) {
         HBox messageBox = new HBox();
         messageBox.getStyleClass().add("message-box");
         messageBox.getStyleClass().add(isUser ? "message-box-user" : "message-box-assistant");
@@ -193,31 +223,6 @@ public class MainWindowController extends ControllerBase {
             messageBox.getChildren().add(messageLabel);
             chatArea.getChildren().add(messageBox);
         } else {
-            HBox loadingBox = new HBox();
-            loadingBox.getStyleClass().add("message-box");
-            loadingBox.getStyleClass().add("message-box-assistant");
-
-            HBox loader = new HBox();
-            loader.getStyleClass().add("loader");
-            loader.setSpacing(5);
-
-            for (int i = 0; i < 3; i++) {
-                Circle circle = new Circle(3);
-                circle.getStyleClass().add("loader-circle");
-
-                TranslateTransition transition = new TranslateTransition(Duration.seconds(0.6), circle);
-                transition.setByY(10);
-                transition.setCycleCount(TranslateTransition.INDEFINITE);
-                transition.setAutoReverse(true);
-                transition.setDelay(Duration.seconds(i * 0.2));
-                transition.play();
-
-                loader.getChildren().add(circle);
-            }
-
-            loadingBox.getChildren().add(loader);
-            chatArea.getChildren().add(loadingBox);
-
             CompletableFuture.supplyAsync(() -> {
                 try {
                     Thread.sleep(1000);
@@ -227,7 +232,8 @@ public class MainWindowController extends ControllerBase {
                     return new Label(message);
                 }
             }).thenAccept(parsedText -> Platform.runLater(() -> {
-                chatArea.getChildren().remove(loadingBox);
+                if (loadingBox != null)
+                    chatArea.getChildren().remove(loadingBox);
 
                 VBox container = new VBox(parsedText);
                 container.getStyleClass().add("markdown-container");
