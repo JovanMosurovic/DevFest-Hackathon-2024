@@ -12,9 +12,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class WeatherTrackTest {
+public class WeatherTrack {
 
-    private static final Logger logger = Logger.getLogger(WeatherTrackTest.class.getName());
+    private static final Logger logger = Logger.getLogger(WeatherTrack.class.getName());
 
     public static final String BASE_WEATHER_API = "https://api.open-meteo.com/v1/forecast";
     public static final String LOCATION_API = "http://ip-api.com/json/";
@@ -22,13 +22,13 @@ public class WeatherTrackTest {
     private final LocationService locationService;
     private final WeatherService weatherService;
 
-    public WeatherTrackTest() {
+    public WeatherTrack() {
         this.locationService = new LocationService();
         this.weatherService = new WeatherService();
     }
 
     public static void main(String[] args) {
-        WeatherTrackTest weatherTracker = new WeatherTrackTest();
+        WeatherTrack weatherTracker = new WeatherTrack();
         try {
             weatherTracker.displayWeatherData();
         } catch (Exception e) {
@@ -85,7 +85,7 @@ class LocationService {
 
     public Location getCurrentLocation() {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet request = new HttpGet(WeatherTrackTest.LOCATION_API);
+            HttpGet request = new HttpGet(WeatherTrack.LOCATION_API);
             String jsonResponse = EntityUtils.toString(httpClient.execute(request).getEntity());
             System.out.println("Location API Response: " + jsonResponse);
 
@@ -132,7 +132,7 @@ class WeatherService {
 
     private String fetchWeatherData(Location location) throws IOException {
         String apiUrl = String.format("%s?latitude=%s&longitude=%s&hourly=temperature_2m",
-                WeatherTrackTest.BASE_WEATHER_API, location.getLatitude(), location.getLongitude());
+                WeatherTrack.BASE_WEATHER_API, location.getLatitude(), location.getLongitude());
 
         System.out.println("Fetching weather from: " + apiUrl);
 
