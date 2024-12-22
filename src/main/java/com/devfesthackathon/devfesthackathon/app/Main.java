@@ -23,7 +23,7 @@ public class Main extends Application {
         Window.setWindowAt(Window.CLOSE_WINDOW, new CloseWindow());
         Window.setWindowAt(Window.MAIN_WINDOW, new MainWindow());
         Window.setWindowAt(Window.ABOUT_WINDOW, new AboutWindow());
-        Window.setWindowAt(Window.FORCEQUIT_WINDOW, new ForceQuitWindow());
+        Window.setWindowAt(Window.FORCE_QUIT_WINDOW, new ForceQuitWindow());
 
         Window.initAllWindows();
     }

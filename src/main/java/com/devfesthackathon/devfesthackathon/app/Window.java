@@ -16,9 +16,18 @@ public abstract class Window {
      * The position of the main window in the application.
      */
     public static final int MAIN_WINDOW;
+    /**
+     * The position of the close window in the application.
+     */
     public static final int CLOSE_WINDOW;
+    /**
+     * The position of the about window in the application.
+     */
     public static final int ABOUT_WINDOW;
-    public static final int FORCEQUIT_WINDOW;
+    /**
+     * The position of the force quit window in the application.
+     */
+    public static final int FORCE_QUIT_WINDOW;
 
     /**
      * The array of all windows in the application.
@@ -45,7 +54,7 @@ public abstract class Window {
         MAIN_WINDOW = 0;
         CLOSE_WINDOW = 1;
         ABOUT_WINDOW=2;
-        FORCEQUIT_WINDOW=3;
+        FORCE_QUIT_WINDOW=3;
         isDarkTheme = false; // Default theme is light when the application starts
 
         windows = new Window[WINDOWS];

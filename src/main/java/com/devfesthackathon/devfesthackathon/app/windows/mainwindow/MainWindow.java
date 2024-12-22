@@ -3,9 +3,11 @@ package com.devfesthackathon.devfesthackathon.app.windows.mainwindow;
 import com.devfesthackathon.devfesthackathon.app.Window;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class MainWindow extends Window {
@@ -21,15 +23,15 @@ public class MainWindow extends Window {
     @Override
     public void init(Stage stage) {
         try {
-            System.out.println(MainWindow.class.getResource(""));
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("mainwindow.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
 
-        //    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
 
             this.stage = stage;
-            stage.setTitle("SQL Editor");
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/cropsense_icon.png"))));
             stage.setScene(scene);
+            stage.setResizable(false);
             Window.centerOnScreen(Window.MAIN_WINDOW);
 
             stage.show();

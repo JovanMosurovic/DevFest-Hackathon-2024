@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.devfesthackathon.devfesthackathon.app.windows.mainwindow.MainWindowController">
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.devfesthackathon.devfesthackathon.app.windows.mainwindow.MainWindowController"
-            prefHeight="400.0" prefWidth="600.0">
+    <VBox spacing="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <!-- Header with avatar -->
+        <HBox alignment="CENTER" style="-fx-background-color: #ffffff; -fx-padding: 10;">
+            <ImageView fx:id="avatarImage" fitHeight="80" fitWidth="80">
+                <Image url="@../../../../../../icons/warning_icon_64x64.png" />
+            </ImageView>
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+        </HBox>
+
+        <!-- Area for chat -->
+        <ScrollPane fx:id = "chatScrollPane" style="-fx-background: #ffffff; -fx-border-color: #e4e6eb;" VBox.vgrow="ALWAYS">
+            <VBox fx:id="chatArea" prefHeight="625.0" prefWidth="1200.0" spacing="10" style="-fx-padding: 10;" />
+        </ScrollPane>
+
+        <!-- Bottom part for message input -->
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Button fx:id="attachButton" style="-fx-background-color: transparent;">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../../../../icons/attach_icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <TextField fx:id="messageInput" promptText="Message CropSense" style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="sendButton" style="-fx-background-color: #0084ff; -fx-text-fill: white;">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../../../../../../icons/send_icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
 
 </AnchorPane>
