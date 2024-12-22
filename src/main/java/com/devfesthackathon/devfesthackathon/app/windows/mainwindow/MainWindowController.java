@@ -131,48 +131,57 @@ public class MainWindowController extends ControllerBase {
 
     private void sendMessage() {
         String message = messageInput.getText().trim();
-        File tempImage = selectedImage;
 
-        if(selectedImage != null) {
-            String defaultPrompt = "Analyze this image and provide insights on its contents.";
-            String finalMessage = message.isEmpty() ? defaultPrompt : message;
-
-            if(!message.isEmpty()) {
-                addMessageToChat(message, true);
-            }
-
-            messageInput.clear();
-            Platform.runLater(() -> {
-                try {
-                    Thread.sleep(1000);
-                    String response = GeminiAPI.generateImageResponse(finalMessage, tempImage.getAbsolutePath());
-                    addMessageToChat(response, false);
-                } catch (InterruptedException e) {
-                    logger.severe("Error occurred while generating response: " + e.getMessage());
-                }
-            });
-            selectedImage = null;
+        if(message.isEmpty() && selectedImage == null) {
             return;
         }
 
-        String defaultPrompt = "Can you provide some insights on this image?";
+        if(selectedImage != null) {
+            handleImageMessage(message);
+        } else {
+            handleTextMessage(message);
+        }
+    }
+
+    private void handleTextMessage(String message) {
+        addMessageToChat(message, true);
+        messageInput.clear();
+
+        try {
+            String modifiedPrompt = message + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
+                    "If the question is not related to agriculture, farming, crops, or plant care, or it is just chatting, " +
+                    "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
+
+            String response = GeminiAPI.generateText(modifiedPrompt);
+            addMessageToChat(response, false);
+        } catch (Exception e) {
+            logger.severe("Error occurred while generating text response: " + e.getMessage());
+        }
+    }
+
+    private void handleImageMessage(String message) {
+        String defaultPrompt = "Analyze this image and provide insights on its contents.";
         String finalMessage = message.isEmpty() ? defaultPrompt : message;
 
         if(!message.isEmpty()) {
             addMessageToChat(message, true);
         }
 
+        File tempImage = selectedImage;
         messageInput.clear();
 
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-                String response = GeminiAPI.generateText(finalMessage);
-                addMessageToChat(response, false);
-            } catch (InterruptedException e) {
-                logger.severe("Error occurred while generating response: " + e.getMessage());
-            }
-        });
+        try {
+            String modifiedPrompt = finalMessage + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
+                    "If the image is not related to agriculture, farming, crops, or plant care, " +
+                    "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
+
+            String response = GeminiAPI.generateImageResponse(modifiedPrompt, tempImage.getAbsolutePath());
+            addMessageToChat(response, false);
+        } catch (Exception e) {
+            logger.severe("Error occurred while generating image response: " + e.getMessage());
+        }
+
+        selectedImage = null;
     }
 
     private void addMessageToChat(String message, boolean isUser) {
