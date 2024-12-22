@@ -22,6 +22,22 @@
             <Label fx:id="welcomeLabel" styleClass="welcome-label" />
         </HBox>
 
+        <!-- Prompt cloud container -->
+        <HBox fx:id="promptCloudContainer" alignment="CENTER" spacing="10" style="-fx-padding: 10;">
+            <VBox spacing="10" alignment="CENTER">
+                <HBox spacing="10" alignment="CENTER">
+                    <Button styleClass="prompt-button" text="How to identify plant diseases?" />
+                    <Button styleClass="prompt-button" text="Best practices for crop rotation" />
+                    <Button styleClass="prompt-button" text="Soil testing tips" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button styleClass="prompt-button" text="Organic farming methods" />
+                    <Button styleClass="prompt-button" text="Water management tips" />
+                    <Button styleClass="prompt-button" text="Pest control solutions" />
+                </HBox>
+            </VBox>
+        </HBox>
+
         <!-- Area for chat -->
         <ScrollPane fx:id="chatScrollPane" style="-fx-background: #ffffff; -fx-border-color: #e4e6eb;" VBox.vgrow="ALWAYS">
             <VBox fx:id="chatArea" prefHeight="625.0" prefWidth="1200.0" spacing="10" style="-fx-padding: 10;" />

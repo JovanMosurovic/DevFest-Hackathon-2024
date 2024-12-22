@@ -44,6 +44,8 @@ public class MainWindowController extends ControllerBase {
     @FXML
     private VBox chatArea;
     @FXML
+    private HBox promptCloudContainer;
+    @FXML
     private TextField messageInput;
     @FXML
     private Button attachButton;
@@ -60,6 +62,7 @@ public class MainWindowController extends ControllerBase {
         generateWelcomeMessage();
         setupMessageHandling();
         setupAttachmentHandling();
+        setupPromptCloud();
     }
 
     private void generateWelcomeMessage() {
@@ -101,6 +104,25 @@ public class MainWindowController extends ControllerBase {
             if (selectedFile != null) {
                 selectedImage = selectedFile;
                 addImageToChat(selectedFile);
+            }
+        });
+    }
+
+    private void setupPromptCloud() {
+        // Get all buttons in the prompt cloud
+        promptCloudContainer.lookupAll(".prompt-button").forEach(node -> {
+            if (node instanceof Button button) {
+                button.setOnAction(e -> {
+                    // Send the prompt text when clicked
+                    messageInput.setText(button.getText());
+                    sendMessage();
+                    // Hide the prompt cloud
+                    promptCloudContainer.setVisible(false);
+                    promptCloudContainer.setManaged(false);
+                });
+
+                // Style the button
+                button.getStyleClass().add("prompt-cloud-button");
             }
         });
     }

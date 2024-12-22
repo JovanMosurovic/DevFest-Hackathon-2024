@@ -737,3 +737,16 @@
         -fx-translate-y: 15px;
     }
 }
+
+.prompt-cloud-button {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #1976d2;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-cursor: hand;
+}
+
+.prompt-cloud-button:hover {
+    -fx-background-color: #bbdefb;
+}
