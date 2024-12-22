@@ -750,3 +750,25 @@
 .prompt-cloud-button:hover {
     -fx-background-color: #bbdefb;
 }
+
+.image-message-container {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.image-wrapper {
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-background-radius: 10;
+}
+
+.image-info-label {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12px;
+    -fx-padding: 5 0 0 0;
+}
+
+.image-view {
+    -fx-background-radius: 8;
+}

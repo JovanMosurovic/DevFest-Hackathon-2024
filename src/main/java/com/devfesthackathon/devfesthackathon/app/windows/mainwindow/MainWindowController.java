@@ -157,6 +157,9 @@ public class MainWindowController extends ControllerBase {
     }
 
     private void handleImageMessage(String message) {
+        promptCloudContainer.setVisible(false);
+        promptCloudContainer.setManaged(false);
+
         String defaultPrompt = "Analyze this image and provide insights on its contents.";
         String finalMessage = message.isEmpty() ? defaultPrompt : message;
 
@@ -250,12 +253,31 @@ public class MainWindowController extends ControllerBase {
         try {
             Image image = new Image(imageFile.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(200);
+
+            imageView.setFitWidth(300);  // Increased width for better visibility
             imageView.setPreserveRatio(true);
 
-            HBox imageBox = new HBox(imageView);
-            imageBox.setAlignment(Pos.CENTER_RIGHT);
-            chatArea.getChildren().add(imageBox);
+            VBox imageContainer = new VBox();
+            imageContainer.getStyleClass().add("image-message-container");
+            imageContainer.setAlignment(Pos.CENTER_RIGHT);
+
+            HBox imageWrapper = new HBox(imageView);
+            imageView.getStyleClass().add("image-wrapper");
+            imageWrapper.setAlignment(Pos.CENTER_RIGHT);
+
+            Label imageInfo = new Label(imageFile.getName());
+            imageInfo.getStyleClass().add("image-info-label");
+
+            imageContainer.getChildren().addAll(imageWrapper, imageInfo);
+
+            imageContainer.setSpacing(5);
+            imageContainer.setPadding(new javafx.geometry.Insets(10));
+
+            chatArea.getChildren().add(imageContainer);
+
+            // Scroll to bottom
+            chatScrollPane.setVvalue(1.0);
+
         } catch (Exception e) {
             logger.severe("Error occurred while adding image to chat: " + e.getMessage());
         }
