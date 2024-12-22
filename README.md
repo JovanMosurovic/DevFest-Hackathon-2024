@@ -1,6 +1,8 @@
-# CropSense
+# CropSense ![cropsense_icon](https://github.com/user-attachments/assets/84e58dc6-7a40-46c4-a937-2d438fb0cbf9)
 
 CropSense is an agricultural management application that helps farmers optimize their crop production through smart monitoring and guidance.
+
+
 
 ## Features
 
@@ -10,6 +12,9 @@ CropSense is an agricultural management application that helps farmers optimize 
 - Organic farming guidance and best practices
 - Smart water management and irrigation insights
 - Integrated pest control management solutions
+- User friendly interface
+
+<img src="https://github.com/user-attachments/assets/1d1d14ca-46dc-4deb-8810-8ca6ea282784" width="70%" height="70%" alt="CropSense Logo">
 
 ## Getting Started
 
