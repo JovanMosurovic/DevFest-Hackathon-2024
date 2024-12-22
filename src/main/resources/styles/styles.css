@@ -720,12 +720,12 @@
 }
 
 .loader-circle {
-    -fx-min-width: 5px;
-    -fx-min-height: 5px;
-    -fx-pref-width: 5px;
-    -fx-pref-height: 5px;
-    -fx-background-color: #0084ff;
-    -fx-background-radius: 50%;
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+    -fx-pref-width: 8px;
+    -fx-pref-height: 8px;
+    -fx-fill: #0084ff;
+    /*-fx-background-radius: 50%;*/
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);
 }
 

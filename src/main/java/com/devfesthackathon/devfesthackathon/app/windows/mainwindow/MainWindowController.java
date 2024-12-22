@@ -4,10 +4,10 @@ import com.devfesthackathon.devfesthackathon.app.ControllerBase;
 import com.devfesthackathon.devfesthackathon.app.GeminiAPI;
 import com.devfesthackathon.devfesthackathon.app.Window;
 import com.devfesthackathon.devfesthackathon.app.util.MarkdownParser;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -16,7 +16,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
@@ -109,19 +111,15 @@ public class MainWindowController extends ControllerBase {
     }
 
     private void setupPromptCloud() {
-        // Get all buttons in the prompt cloud
         promptCloudContainer.lookupAll(".prompt-button").forEach(node -> {
             if (node instanceof Button button) {
                 button.setOnAction(e -> {
-                    // Send the prompt text when clicked
                     messageInput.setText(button.getText());
                     sendMessage();
-                    // Hide the prompt cloud
                     promptCloudContainer.setVisible(false);
                     promptCloudContainer.setManaged(false);
                 });
 
-                // Style the button
                 button.getStyleClass().add("prompt-cloud-button");
             }
         });
@@ -192,14 +190,53 @@ public class MainWindowController extends ControllerBase {
             messageLabel.setWrapText(true);
             messageLabel.getStyleClass().addAll("message-bubble", "message-bubble-user");
             messageBox.getChildren().add(messageLabel);
+            chatArea.getChildren().add(messageBox);
         } else {
-            Node parsedText = MarkdownParser.parseMarkdownToText(message);
-            VBox container = new VBox(parsedText);
-            container.getStyleClass().add("markdown-container");
-            messageBox.getChildren().add(container);
-        }
+            HBox loadingBox = new HBox();
+            loadingBox.getStyleClass().add("message-box");
+            loadingBox.getStyleClass().add("message-box-assistant");
 
-        chatArea.getChildren().add(messageBox);
+            HBox loader = new HBox();
+            loader.getStyleClass().add("loader");
+            loader.setSpacing(5);
+
+            for (int i = 0; i < 3; i++) {
+                Circle circle = new Circle(3);
+                circle.getStyleClass().add("loader-circle");
+
+                TranslateTransition transition = new TranslateTransition(Duration.seconds(0.6), circle);
+                transition.setByY(10);
+                transition.setCycleCount(TranslateTransition.INDEFINITE);
+                transition.setAutoReverse(true);
+                transition.setDelay(Duration.seconds(i * 0.2));
+                transition.play();
+
+                loader.getChildren().add(circle);
+            }
+
+            loadingBox.getChildren().add(loader);
+            chatArea.getChildren().add(loadingBox);
+
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    Thread.sleep(1000);
+                    return MarkdownParser.parseMarkdownToText(message);
+                } catch (Exception e) {
+                    logger.severe("Error parsing markdown: " + e.getMessage());
+                    return new Label(message);
+                }
+            }).thenAccept(parsedText -> Platform.runLater(() -> {
+                chatArea.getChildren().remove(loadingBox);
+
+                VBox container = new VBox(parsedText);
+                container.getStyleClass().add("markdown-container");
+                messageBox.getChildren().add(container);
+                chatArea.getChildren().add(messageBox);
+
+                // Scroll to bottom
+                chatScrollPane.setVvalue(1.0);
+            }));
+        }
     }
 
     private void addImageToChat(File imageFile) {
