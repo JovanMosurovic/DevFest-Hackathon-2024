@@ -12,4 +12,12 @@ public class CloseWindowController extends ControllerBase {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Window.getWindowAt(Window.CLOSE_WINDOW).setController(this);
     }
+
+    public void handleYes() {
+        Window.closeAllWindows();
+    }
+
+    public void handleCancel() {
+        Window.hideWindow(Window.CLOSE_WINDOW);
+    }
 }

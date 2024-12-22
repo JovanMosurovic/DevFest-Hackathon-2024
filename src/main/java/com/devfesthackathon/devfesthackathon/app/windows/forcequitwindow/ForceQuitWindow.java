@@ -23,7 +23,7 @@ public class ForceQuitWindow extends Window {
     public void init(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ForceQuitWindow.class.getResource("forcequitwindow.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Scene scene = new Scene(fxmlLoader.load(), 400, 200);
 
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
 

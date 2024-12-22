@@ -36,6 +36,11 @@ public class MainWindow extends Window {
 
             stage.show();
 
+            this.stage.setOnCloseRequest(event -> {
+                event.consume();
+                Window.getWindowAt(Window.CLOSE_WINDOW).getStage().show();
+            });
+
         } catch (IOException e) {
             throw new RuntimeException();
         }

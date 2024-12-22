@@ -25,7 +25,7 @@ public class CloseWindow extends Window {
     public void init(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(CloseWindow.class.getResource("closewindow.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load(), 400, 200);
 
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
 

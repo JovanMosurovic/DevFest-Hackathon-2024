@@ -29,19 +29,20 @@
 
         <!-- Bottom part for message input -->
         <HBox spacing="10" style="-fx-padding: 10;">
-            <Button fx:id="attachButton" style="-fx-background-color: transparent;">
+            <Button fx:id="attachButton" styleClass="attach-button">
                 <graphic>
-                    <ImageView fitHeight="24" fitWidth="24">
+                    <ImageView styleClass="image-view" fitHeight="24" fitWidth="24">
                         <Image url="@../../../../../../icons/attach_icon.png" />
                     </ImageView>
                 </graphic>
             </Button>
 
-            <TextField fx:id="messageInput" promptText="Message CropSense" style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="messageInput" promptText="Message CropSense"
+                       styleClass="message-input-field" HBox.hgrow="ALWAYS" />
 
-            <Button fx:id="sendButton" style="-fx-background-color: #0084ff; -fx-text-fill: white;">
+            <Button fx:id="sendButton" styleClass="send-button">
                 <graphic>
-                    <ImageView fitHeight="24" fitWidth="24">
+                    <ImageView styleClass="image-view" fitHeight="24" fitWidth="24">
                         <Image url="@../../../../../../icons/send_icon.png" />
                     </ImageView>
                 </graphic>
