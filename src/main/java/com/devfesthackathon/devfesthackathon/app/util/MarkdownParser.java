@@ -30,7 +30,6 @@ public class MarkdownParser {
         for (TextSegment segment : segments) {
             Text text = new Text(segment.text);
 
-            // Primena stilova
             if (segment.isBold) {
                 text.getStyleClass().add("markdown-bold");
             }

@@ -73,7 +73,7 @@ public class MainWindowController extends ControllerBase {
 
                 String generatedMessage = GeminiAPI.generateText(prompt);
 
-                Thread.sleep(5000);
+                Thread.sleep(6000);
 
                 Platform.runLater(() -> {
                     if (generatedMessage != null && !generatedMessage.isEmpty()) {
