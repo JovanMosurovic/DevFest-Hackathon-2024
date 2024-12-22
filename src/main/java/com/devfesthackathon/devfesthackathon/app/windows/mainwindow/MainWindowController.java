@@ -2,8 +2,11 @@ package com.devfesthackathon.devfesthackathon.app.windows.mainwindow;
 
 import com.devfesthackathon.devfesthackathon.app.ControllerBase;
 import com.devfesthackathon.devfesthackathon.app.GeminiAPI;
+import com.devfesthackathon.devfesthackathon.app.WeatherTrack;
 import com.devfesthackathon.devfesthackathon.app.Window;
 import com.devfesthackathon.devfesthackathon.app.util.MarkdownParser;
+import com.devfesthackathon.devfesthackathon.app.Location;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -22,6 +25,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -52,9 +56,13 @@ public class MainWindowController extends ControllerBase {
     @FXML
     private Button attachButton;
     @FXML
+    private Button weatherButton;
+    @FXML
     private Button sendButton;
 
     private File selectedImage = null;
+    private Boolean weatherModeEnabled = false;
+    private WeatherTrack weatherTracker;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +73,9 @@ public class MainWindowController extends ControllerBase {
         setupMessageHandling();
         setupAttachmentHandling();
         setupPromptCloud();
+        setupWeatherMode();
+
+        weatherTracker = new WeatherTrack();
     }
 
     private void generateWelcomeMessage() {
@@ -125,6 +136,24 @@ public class MainWindowController extends ControllerBase {
         });
     }
 
+    private void setupWeatherMode() {
+        weatherButton.setOnAction(e -> toggleWeatherMode());
+        updateWeatherButtonStyle();
+    }
+
+    private void toggleWeatherMode() {
+        weatherModeEnabled = !weatherModeEnabled;
+        updateWeatherButtonStyle();
+    }
+
+    private void updateWeatherButtonStyle() {
+        if (weatherModeEnabled) {
+            weatherButton.getStyleClass().add("weather-enabled");
+        } else {
+            weatherButton.getStyleClass().remove("weather-enabled");
+        }
+    }
+
     private void sendMessage() {
         String message = messageInput.getText().trim();
 
@@ -143,7 +172,25 @@ public class MainWindowController extends ControllerBase {
         addMessageToChat(message, true, null);
         messageInput.clear();
 
-        String modifiedPrompt = message + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
+        String modifiedPrompt = message;
+
+        if (weatherModeEnabled) {
+            try {
+                Location location = weatherTracker.getLocationService().getCurrentLocation();
+                List<Double> temperatures = weatherTracker.getWeatherService().getDailyAverageTemperatures(location);
+
+                modifiedPrompt += "\n\nCurrent location: " + location.toString() +
+                        "\nWeather data for the next " + temperatures.size() + " days:\n";
+
+                for (int i = 0; i < temperatures.size(); i++) {
+                    modifiedPrompt += String.format("Day %d: %.2f°C\n", i + 1, temperatures.get(i));
+                }
+            } catch (Exception e) {
+                logger.warning("Could not fetch weather data: " + e.getMessage());
+            }
+        }
+
+        modifiedPrompt += "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
                 "If the question is not related to agriculture, farming, crops, or plant care, or it is just chatting, " +
                 "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
 

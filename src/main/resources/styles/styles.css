@@ -772,3 +772,37 @@
 .image-view {
     -fx-background-radius: 8;
 }
+
+.weather-button {
+    -fx-background-color: #f0f2f5;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-transition-duration: 0.2s;
+}
+
+.weather-button:hover {
+    -fx-background-color: #e4e6eb;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+}
+
+.weather-enabled {
+    -fx-background-color: #e3f2fd;
+    -fx-border-color: #90caf9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+}
+
+.weather-enabled:hover {
+    -fx-background-color: #bbdefb;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+}
+
+.weather-button .image-view {
+    -fx-opacity: 0.7;
+}
+
+.weather-enabled .image-view {
+    -fx-opacity: 1.0;
+}

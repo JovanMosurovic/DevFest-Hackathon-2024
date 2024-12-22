@@ -53,6 +53,14 @@
                 </graphic>
             </Button>
 
+            <Button fx:id="weatherButton" styleClass="weather-button">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24" styleClass="image-view">
+                        <Image url="@../../../../../../icons/weather_icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
             <TextField fx:id="messageInput" promptText="Message CropSense" styleClass="message-input-field" HBox.hgrow="ALWAYS" />
 
             <Button fx:id="sendButton" styleClass="send-button">

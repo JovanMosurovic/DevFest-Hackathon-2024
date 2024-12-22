@@ -8,7 +8,7 @@ module com.devfesthackathon.devfesthackathon {
     requires java.logging;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
-
+    requires proto.google.common.protos;
 
 
     opens com.devfesthackathon.devfesthackathon.app to javafx.fxml;
