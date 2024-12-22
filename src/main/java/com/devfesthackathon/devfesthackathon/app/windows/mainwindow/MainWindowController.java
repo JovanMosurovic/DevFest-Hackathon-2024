@@ -143,16 +143,15 @@ public class MainWindowController extends ControllerBase {
         addMessageToChat(message, true);
         messageInput.clear();
 
-        try {
-            String modifiedPrompt = message + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
-                    "If the question is not related to agriculture, farming, crops, or plant care, or it is just chatting, " +
-                    "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
+        String modifiedPrompt = message + "\n\nNote: You are an AI assistant specifically designed for agricultural and crop-related topics. " +
+                "If the question is not related to agriculture, farming, crops, or plant care, or it is just chatting, " +
+                "politely inform the user that you are specialized in agricultural topics and can only assist with those kinds of questions.";
 
-            String response = GeminiAPI.generateText(modifiedPrompt);
-            addMessageToChat(response, false);
-        } catch (Exception e) {
-            logger.severe("Error occurred while generating text response: " + e.getMessage());
-        }
+        GeminiAPI.generateTextAsync(modifiedPrompt).thenAcceptAsync(response -> {
+            if (response != null && !response.isEmpty()) {
+                Platform.runLater(() -> addMessageToChat(response, false));
+            }
+        });
     }
 
     private void handleImageMessage(String message) {

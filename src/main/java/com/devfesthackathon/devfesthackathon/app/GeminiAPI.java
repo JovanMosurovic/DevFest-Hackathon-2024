@@ -14,6 +14,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 /**
@@ -40,6 +41,19 @@ public class GeminiAPI {
                     "stopSequences", List.of()
             );
         }
+    }
+
+    public static CompletableFuture<String> generateTextAsync(String prompt) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Map<String, Object> requestBody = createRequestBody(prompt);
+                String endpoint = getEndpoint(Models.TEXT);
+                return executeRequestAndExtractText(endpoint, requestBody);
+            } catch (Exception e) {
+                logger.severe(e.getMessage());
+                return handleError(e);
+            }
+        });
     }
 
     public static String generateText(String prompt) {
