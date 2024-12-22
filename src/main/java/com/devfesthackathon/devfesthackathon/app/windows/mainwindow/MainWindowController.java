@@ -3,12 +3,14 @@ package com.devfesthackathon.devfesthackathon.app.windows.mainwindow;
 import com.devfesthackathon.devfesthackathon.app.ControllerBase;
 import com.devfesthackathon.devfesthackathon.app.GeminiAPI;
 import com.devfesthackathon.devfesthackathon.app.Window;
+import com.devfesthackathon.devfesthackathon.app.util.MarkdownParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -57,15 +58,17 @@ public class MainWindowController extends ControllerBase {
 
     private Timeline avatarAnimation;
 
+    private File selectedImage = null;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Window.getWindowAt(Window.MAIN_WINDOW).setController(this);
         chatScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         chatScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        generateWelcomeMessage();
         setupAvatarAnimation();
         setupMessageHandling();
         setupAttachmentHandling();
-        generateWelcomeMessage();
     }
 
     private void generateWelcomeMessage() {
@@ -116,10 +119,11 @@ public class MainWindowController extends ControllerBase {
         attachButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.webp", "heic", "heif", "gif")
             );
             File selectedFile = fileChooser.showOpenDialog(null);
             if (selectedFile != null) {
+                selectedImage = selectedFile;
                 addImageToChat(selectedFile);
             }
         });
@@ -127,36 +131,67 @@ public class MainWindowController extends ControllerBase {
 
     private void sendMessage() {
         String message = messageInput.getText().trim();
-        if (!message.isEmpty()) {
-            addMessageToChat(message, true);
+        File tempImage = selectedImage;
+
+        if(selectedImage != null) {
+            String defaultPrompt = "Analyze this image and provide insights on its contents.";
+            String finalMessage = message.isEmpty() ? defaultPrompt : message;
+
+            if(!message.isEmpty()) {
+                addMessageToChat(message, true);
+            }
+
             messageInput.clear();
-            // Simulation of the assistant's response
             Platform.runLater(() -> {
                 try {
                     Thread.sleep(1000);
-                    String response = GeminiAPI.generateText(message);
+                    String response = GeminiAPI.generateImageResponse(finalMessage, tempImage.getAbsolutePath());
                     addMessageToChat(response, false);
                 } catch (InterruptedException e) {
                     logger.severe("Error occurred while generating response: " + e.getMessage());
                 }
             });
+            selectedImage = null;
+            return;
         }
+
+        String defaultPrompt = "Can you provide some insights on this image?";
+        String finalMessage = message.isEmpty() ? defaultPrompt : message;
+
+        if(!message.isEmpty()) {
+            addMessageToChat(message, true);
+        }
+
+        messageInput.clear();
+
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(1000);
+                String response = GeminiAPI.generateText(finalMessage);
+                addMessageToChat(response, false);
+            } catch (InterruptedException e) {
+                logger.severe("Error occurred while generating response: " + e.getMessage());
+            }
+        });
     }
 
     private void addMessageToChat(String message, boolean isUser) {
-        HBox messageBox = new HBox(10);
-        messageBox.setAlignment(isUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+        HBox messageBox = new HBox();
+        messageBox.getStyleClass().add("message-box");
+        messageBox.getStyleClass().add(isUser ? "message-box-user" : "message-box-assistant");
 
-        Label messageLabel = new Label(message);
-        messageLabel.setWrapText(true);
-        messageLabel.setMaxWidth(300);
-        messageLabel.setStyle(
-                String.format("-fx-background-color: %s; -fx-padding: 10; -fx-background-radius: 15;",
-                        isUser ? "#0084ff" : "#e4e6eb")
-        );
-        messageLabel.setTextFill(isUser ? Color.WHITE : Color.BLACK);
+        if (isUser) {
+            Label messageLabel = new Label(message);
+            messageLabel.setWrapText(true);
+            messageLabel.getStyleClass().addAll("message-bubble", "message-bubble-user");
+            messageBox.getChildren().add(messageLabel);
+        } else {
+            Node parsedText = MarkdownParser.parseMarkdownToText(message);
+            VBox container = new VBox(parsedText);
+            container.getStyleClass().add("markdown-container");
+            messageBox.getChildren().add(container);
+        }
 
-        messageBox.getChildren().add(messageLabel);
         chatArea.getChildren().add(messageBox);
     }
 
