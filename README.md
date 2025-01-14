@@ -2,6 +2,11 @@
 
 CropSense is an intelligent chatbot system that helps users analyze agricultural images and provides educational information about crops without the need for extensive research or literature review. The application combines real-time weather data and AI-powered analysis to deliver instant insights about crops and farming practices.
 
+## Contributors
+- [Jovan Mosurović](https://github.com/JovanMosurovic)
+- [Filip Petrović](https://github.com/fili5rovic)
+- [Veljko Zavišić](https://github.com/Vexa004)
+
 ## Key Features
 - Image analysis of crops and fields for disease identification
 - Quick access to agricultural knowledge through natural conversation
