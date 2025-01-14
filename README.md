@@ -35,7 +35,7 @@ Currently uses Google's Gemini AI models for prototype testing:
 
 Note: While the current version uses general-purpose Gemini models, the system is designed to accommodate specialized agricultural AI models in the future for improved accuracy and domain-specific analysis.
 
-Important: Although using general-purpose AI models, CropSense is specifically configured to only respond to agriculture-related queries. The chatbot will not engage with questions or topics outside of farming and agriculture to maintain its focused educational and analytical purpose.
+**Important**: Although using general-purpose AI models, CropSense is specifically configured to only respond to agriculture-related queries. The chatbot will not engage with questions or topics outside of farming and agriculture to maintain its focused educational and analytical purpose.
 
 ## Getting Started
 1. Open CropSense application
